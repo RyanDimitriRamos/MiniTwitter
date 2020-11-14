@@ -57,6 +57,22 @@ public class UserGroup implements UserComponent{
         return users;
     }
 
-    public void accept(Visitor visitor){ visitor.visit(this); }
+    public int accept(Visitor visitor){
+        int count = 0;
+        Stack<UserGroup> groupsToCheck = new Stack<>();
+        groupsToCheck.push(this);
+        while(!groupsToCheck.isEmpty()){
+            UserGroup currentUserGroup = groupsToCheck.pop();
+            for(UserComponent userComponent : currentUserGroup.getUsers()){
+                if(userComponent instanceof UserGroup){
+                    groupsToCheck.push((UserGroup) userComponent);
+                    count+= visitor.visit((UserGroup)userComponent);
+                }else {
+                    count+= visitor.visit((User)userComponent);
+                }
+            }
+        }
+        return count;
+    }
 
 }

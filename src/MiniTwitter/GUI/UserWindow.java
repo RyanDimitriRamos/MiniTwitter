@@ -165,6 +165,7 @@ public class UserWindow extends JFrame {
         if(!tweetText.equals("")){
             Tweet tweet = new Tweet(tweetText, user);
             feedListPanel.sendTweet(tweet);
+            postTweetTextField.setText("");
         }else{
             System.out.println("Cannot post empty tweet.");
         }

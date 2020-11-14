@@ -5,10 +5,10 @@ import MiniTwitter.CompositeUsers.UserGroup;
 import MiniTwitter.GUI.ApplicationWindow;
 
 public interface Visitor {
-    public ApplicationWindow currentFrame = ApplicationWindow.getInstance(); //needed to create dialogs
 
-    public void visit(User user);
 
-    public void visit(UserGroup userGroup);
+    public int visit(User user);
+
+    public int visit(UserGroup userGroup);
 
 }

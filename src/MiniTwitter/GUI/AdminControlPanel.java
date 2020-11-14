@@ -7,11 +7,13 @@ import MiniTwitter.VisitorPattern.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.util.InputMismatchException;
 
 public class AdminControlPanel extends JPanel {
     //Singleton instance of the adminControlPanel
     private static AdminControlPanel adminControlPanel = null;
+    private ApplicationWindow currentFrame = ApplicationWindow.getInstance();
     public AdminControlPanel() {
         super();
         initComponents();
@@ -170,49 +172,80 @@ public class AdminControlPanel extends JPanel {
 
     private void showUserTotalButtonActionPerformed(ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
-        Visitor userTotal = new UserTotalVisitor();
+        Visitor userTotal = new GroupTotalVisitor();
+        int count;
+        UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){
             User selectedUser = (User)currentlySelected;
-            selectedUser.accept(userTotal);
+            selectedUserGroup = selectedUser.getParent();
         }else{
-            UserGroup selectedUser = (UserGroup)currentlySelected;
-            selectedUser.accept(userTotal);
+           selectedUserGroup = (UserGroup)currentlySelected;
         }
+        count = selectedUserGroup.accept(userTotal);
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current number of users in the directory " + selectedUserGroup + " is: " + count,
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     private void showGroupTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
         Visitor userTotal = new GroupTotalVisitor();
+        int count;
+        UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){
             User selectedUser = (User)currentlySelected;
-            selectedUser.accept(userTotal);
+            selectedUserGroup = selectedUser.getParent();
         }else{
-            UserGroup selectedUser = (UserGroup)currentlySelected;
-            selectedUser.accept(userTotal);
+            selectedUserGroup = (UserGroup)currentlySelected;
         }
+        count = selectedUserGroup.accept(userTotal);
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current number of groups in the directory " + selectedUserGroup + " is: " + count,
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     private void showMessageTotalsButtonActionPerformed(ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
-        Visitor messageVisitor = new MessageTotalVisitor();
+        Visitor messageTotal = new MessageTotalVisitor();
+        int count;
+        UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){
             User selectedUser = (User)currentlySelected;
-            selectedUser.accept(messageVisitor);
+            selectedUserGroup = selectedUser.getParent();
         }else{
-            UserGroup selectedUser = (UserGroup)currentlySelected;
-            selectedUser.accept(messageVisitor);
+            selectedUserGroup = (UserGroup)currentlySelected;
         }
+        count = selectedUserGroup.accept(messageTotal);
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current number of messages in the directory " + selectedUserGroup + " is: " + count,
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
     }
     private void showPositiveVibesTotalButtonActionPerformed(ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
-        Visitor positivePercentage = new PositivePercentageVisitor();
+        Visitor messageTotal = new MessageTotalVisitor();
+        Visitor positiveMessageTotal = new PositivePercentageVisitor();
+        int totalMessageCount;
+        int positiveMessageCount;
+        double percentage;
+        UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){
             User selectedUser = (User)currentlySelected;
-            selectedUser.accept(positivePercentage);
+            selectedUserGroup = selectedUser.getParent();
         }else{
-            UserGroup selectedUser = (UserGroup)currentlySelected;
-            selectedUser.accept(positivePercentage);
+            selectedUserGroup = (UserGroup)currentlySelected;
         }
+        totalMessageCount = selectedUserGroup.accept(messageTotal);
+        positiveMessageCount = selectedUserGroup.accept(positiveMessageTotal);
+        percentage = Double.valueOf(positiveMessageCount) / Double.valueOf(totalMessageCount);
+        NumberFormat defaultFormat = NumberFormat.getPercentInstance();
+        defaultFormat.setMinimumFractionDigits(1);
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current number of messages by users in the selected directory is " + defaultFormat.format(percentage),
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     private void addUserButtonActionPerformed(ActionEvent evt) {
