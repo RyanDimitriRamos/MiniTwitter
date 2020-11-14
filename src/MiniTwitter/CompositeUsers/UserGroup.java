@@ -63,6 +63,10 @@ public class UserGroup implements UserComponent{
         groupsToCheck.push(this);
         while(!groupsToCheck.isEmpty()){
             UserGroup currentUserGroup = groupsToCheck.pop();
+            /*
+              This for loop calling each individual node does the main part of
+              the accept for a visitor design pattern.
+             */
             for(UserComponent userComponent : currentUserGroup.getUsers()){
                 if(userComponent instanceof UserGroup){
                     groupsToCheck.push((UserGroup) userComponent);
