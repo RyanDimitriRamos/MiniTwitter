@@ -172,7 +172,7 @@ public class AdminControlPanel extends JPanel {
 
     private void showUserTotalButtonActionPerformed(ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
-        Visitor userTotal = new GroupTotalVisitor();
+        Visitor userTotal = new UserTotalVisitor();
         int count;
         UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){

@@ -76,6 +76,7 @@ public class UserGroup implements UserComponent{
                 }
             }
         }
+        count+= visitor.visit(this);
         return count;
     }
 
