@@ -12,20 +12,21 @@ import java.util.Stack;
 
 public class PositivePercentageVisitor implements Visitor {
     private String[] positiveWords = {"Milk", "Day", "Night", "Man"}; // Stuff from its always sunny in philidelphia
-    @Override
-    public int visit(User user) {
-        int countOfPositive = 0;
+
+    private int count = 0;
+
+    public void visit(User user) {
         for (Tweet tweet : user.getTweets()) {
             if (tweet.containsPositiveWords(positiveWords)) {
-                countOfPositive++;
+                count++;
 
             }
         }
-        return countOfPositive;
     }
 
-    @Override
-    public int visit(UserGroup userGroup) {
-        return 0;
+    public void visit(UserGroup userGroup) {
+    }
+    public int getCount() {
+        return count;
     }
 }

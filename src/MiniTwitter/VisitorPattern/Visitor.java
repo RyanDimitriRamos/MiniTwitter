@@ -7,8 +7,10 @@ import MiniTwitter.GUI.ApplicationWindow;
 public interface Visitor {
 
 
-    public int visit(User user);
+    public void visit(User user);
 
-    public int visit(UserGroup userGroup);
+    public void visit(UserGroup userGroup);
+
+    public int getCount();
 
 }

@@ -49,8 +49,9 @@ public class User implements UserComponent,Subject, Observer {
         this.parent = parent;
     }
 
-    public int accept(Visitor visitor){
-        return visitor.visit(this);
+    // visitor design pattern
+    public void accept(Visitor visitor){
+        visitor.visit(this);
     }
 
     // Receives tweet from the user interface.

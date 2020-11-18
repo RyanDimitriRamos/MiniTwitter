@@ -181,7 +181,8 @@ public class AdminControlPanel extends JPanel {
         }else{
            selectedUserGroup = (UserGroup)currentlySelected;
         }
-        count = selectedUserGroup.accept(userTotal);
+        selectedUserGroup.accept(userTotal);
+        count = userTotal.getCount();
         JOptionPane.showMessageDialog(currentFrame,
                 "The current number of users in the directory " + selectedUserGroup + " is: " + count,
                 "Metrics",
@@ -190,7 +191,7 @@ public class AdminControlPanel extends JPanel {
 
     private void showGroupTotalButtonActionPerformed(java.awt.event.ActionEvent evt) {
         UserComponent currentlySelected = userTree.getCurrentlySelected();
-        Visitor userTotal = new GroupTotalVisitor();
+        Visitor groupTotal = new GroupTotalVisitor();
         int count;
         UserGroup selectedUserGroup;
         if(currentlySelected instanceof User){
@@ -199,7 +200,8 @@ public class AdminControlPanel extends JPanel {
         }else{
             selectedUserGroup = (UserGroup)currentlySelected;
         }
-        count = selectedUserGroup.accept(userTotal);
+        selectedUserGroup.accept(groupTotal);
+        count = groupTotal.getCount();
         JOptionPane.showMessageDialog(currentFrame,
                 "The current number of groups in the directory " + selectedUserGroup + " is: " + count,
                 "Metrics",
@@ -217,7 +219,8 @@ public class AdminControlPanel extends JPanel {
         }else{
             selectedUserGroup = (UserGroup)currentlySelected;
         }
-        count = selectedUserGroup.accept(messageTotal);
+        selectedUserGroup.accept(messageTotal);
+        count = messageTotal.getCount();
         JOptionPane.showMessageDialog(currentFrame,
                 "The current number of messages in the directory " + selectedUserGroup + " is: " + count,
                 "Metrics",
@@ -237,8 +240,10 @@ public class AdminControlPanel extends JPanel {
         }else{
             selectedUserGroup = (UserGroup)currentlySelected;
         }
-        totalMessageCount = selectedUserGroup.accept(messageTotal);
-        positiveMessageCount = selectedUserGroup.accept(positiveMessageTotal);
+        selectedUserGroup.accept(messageTotal);
+        totalMessageCount = messageTotal.getCount();
+        selectedUserGroup.accept(positiveMessageTotal);
+        positiveMessageCount = positiveMessageTotal.getCount();
         percentage = Double.valueOf(positiveMessageCount) / Double.valueOf(totalMessageCount);
         NumberFormat defaultFormat = NumberFormat.getPercentInstance();
         defaultFormat.setMinimumFractionDigits(1);

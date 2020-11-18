@@ -6,14 +6,15 @@ import javax.swing.*;
 import java.util.Stack;
 
 public class MessageTotalVisitor implements Visitor{
-    @Override
-    public int visit(User user) {
-        return user.getTweets().size();
+    private int count = 0;
+    public void visit(User user) {
+        count+= user.getTweets().size();
     }
 
-    @Override
-    public int visit(UserGroup userGroup) {
+    public void visit(UserGroup userGroup) {
+    }
 
-        return 0;
+    public int getCount() {
+        return count;
     }
 }

@@ -57,27 +57,22 @@ public class UserGroup implements UserComponent{
         return users;
     }
 
-    public int accept(Visitor visitor){
+    public void accept(Visitor visitor){
         int count = 0;
         Stack<UserGroup> groupsToCheck = new Stack<>();
         groupsToCheck.push(this);
         while(!groupsToCheck.isEmpty()){
             UserGroup currentUserGroup = groupsToCheck.pop();
-            /*
-              This for loop calling each individual node does the main part of
-              the accept for a visitor design pattern.
-             */
             for(UserComponent userComponent : currentUserGroup.getUsers()){
                 if(userComponent instanceof UserGroup){
                     groupsToCheck.push((UserGroup) userComponent);
-                    count+= visitor.visit((UserGroup)userComponent);
+                  visitor.visit((UserGroup)userComponent);
                 }else {
-                    count+= visitor.visit((User)userComponent);
+                    visitor.visit((User)userComponent);
                 }
             }
         }
-        count+= visitor.visit(this);
-        return count;
+        visitor.visit(this);
     }
 
 }

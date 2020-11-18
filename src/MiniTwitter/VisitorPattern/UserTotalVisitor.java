@@ -4,13 +4,14 @@ import MiniTwitter.CompositeUsers.User;
 import MiniTwitter.CompositeUsers.UserGroup;
 
 public class UserTotalVisitor implements Visitor {
-    @Override
-    public int visit(User user) {
-        return 1;
-    }
 
-    @Override
-    public int visit(UserGroup userGroup) {
-        return 0;
+    private int count = 0;
+
+    public void visit(User user) { count++; }
+
+    public void visit(UserGroup userGroup) { }
+
+    public int getCount() {
+        return count;
     }
 }
