@@ -17,4 +17,6 @@ public class MessageTotalVisitor implements Visitor{
     public int getCount() {
         return count;
     }
+
+    public User getUser(){return null;}
 }

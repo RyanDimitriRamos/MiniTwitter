@@ -5,6 +5,7 @@ import MiniTwitter.ObserverPattern.Subject;
 import MiniTwitter.Tweet.Tweet;
 import MiniTwitter.VisitorPattern.Visitor;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -31,22 +32,31 @@ public class User implements UserComponent,Subject, Observer {
     private List<Tweet> tweets = new ArrayList<>(); // tweets made by the user
     private List<Tweet> newsFeed = new ArrayList<>(); // List of tweets posted by users the current user is observing.
 
+    //added for assignment 3
+    private long creationTime = System.currentTimeMillis();
+    private long lastUpdateTime;
+
 
     public User(String userID) {
+        lastUpdateTime =creationTime;
         this.userID = userID;
         followers.add(this);
     }
 
-    public List<Observer> getFollowing(){
-        return following;
-    }
+    public List<Observer> getFollowing(){ return following; }
 
     public UserGroup getParent() {
         return parent;
     }
 
-    public void setParent(UserGroup parent){
-        this.parent = parent;
+    public void setParent(UserGroup parent){ this.parent = parent; }
+
+    public String getUserID(){ return userID; }
+
+    public long getLastUpdateTime(){ return lastUpdateTime; }
+
+    public long getCreationTime(){
+        return creationTime;
     }
 
     // visitor design pattern
@@ -57,6 +67,7 @@ public class User implements UserComponent,Subject, Observer {
     // Receives tweet from the user interface.
     public void sendTweet(Tweet tweet){
         System.out.println("Posting tweet: " + tweet);
+        lastUpdateTime = System.currentTimeMillis();
         tweets.add(tweet);
         notifyObservers();
     }
@@ -116,8 +127,10 @@ public class User implements UserComponent,Subject, Observer {
     public void update(Subject subject) {
         if(subject instanceof User){
             User user = (User) subject;
-            List<Tweet> tweets = user.tweets;
-            newsFeed.add(tweets.get(tweets.size() -1));
+            List<Tweet> tweetsOfSubject = user.tweets;
+            newsFeed.add(tweetsOfSubject.get(tweetsOfSubject.size() -1));
+            lastUpdateTime = ((User) subject).getLastUpdateTime();
+            System.out.println("updating lastUpdated for " + this);
         }
 
     }

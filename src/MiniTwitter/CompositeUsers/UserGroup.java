@@ -45,17 +45,13 @@ public class UserGroup implements UserComponent{
         }
     }
 
-    public void setParent(UserGroup parent){
-        this.parent = parent;
-    }
+    public void setParent(UserGroup parent){ this.parent = parent; }
 
-    public UserGroup getParent() {
-        return parent;
-    }
+    public UserGroup getParent() { return parent; }
 
-    public List<UserComponent> getUsers(){
-        return users;
-    }
+    public List<UserComponent> getUsers(){ return users; }
+
+    public String getUserID(){ return userID; }
 
     public void accept(Visitor visitor){
         int count = 0;

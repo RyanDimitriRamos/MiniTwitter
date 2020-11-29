@@ -14,4 +14,6 @@ public class UserTotalVisitor implements Visitor {
     public int getCount() {
         return count;
     }
+
+    public User getUser(){return null;}
 }

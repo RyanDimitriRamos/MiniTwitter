@@ -15,4 +15,6 @@ public interface UserComponent {
     public void setParent(UserGroup user);
 
     public UserGroup getParent();
+
+    public String getUserID();
 }

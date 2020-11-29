@@ -13,4 +13,6 @@ public interface Visitor {
 
     public int getCount();
 
+    public User getUser();
+
 }

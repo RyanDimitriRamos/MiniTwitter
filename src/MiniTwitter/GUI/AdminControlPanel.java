@@ -50,26 +50,28 @@ public class AdminControlPanel extends JPanel {
         showPositiveVibesTotal = new JButton();
         userTextField = new JTextField();
         groupTextField = new JTextField();
+        findLastUpdatedUserButton = new JButton();
+        verifyIDsButton = new JButton();
 
         setBorder(BorderFactory.createTitledBorder("Admin Control Panel"));
 
         addUserButton.setText("Add User");
-        addUserButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        addUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addUserButtonActionPerformed(evt);
             }
         });
 
         addGroupButton.setText("Add Group");
-        addGroupButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        addGroupButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addGroupButtonActionPerformed(evt);
             }
         });
 
         openUserViewButton.setText("Open User View");
-        openUserViewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        openUserViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openUserViewButtonActionPerformed(evt);
             }
         });
@@ -77,8 +79,8 @@ public class AdminControlPanel extends JPanel {
         scrollPane.setViewportView(userTree);
 
         showUserTotalButton.setText("Show User Total");
-        showUserTotalButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        showUserTotalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showUserTotalButtonActionPerformed(evt);
             }
         });
@@ -90,20 +92,28 @@ public class AdminControlPanel extends JPanel {
             }
         });
 
-        showMessageTotalsButton.setText("Show Messages Total");
-        showMessageTotalsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        showMessageTotalsButton.setText("Show Message Total");
+        showMessageTotalsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showMessageTotalsButtonActionPerformed(evt);
             }
         });
 
         showPositiveVibesTotal.setText("Show Positive Total");
-        showPositiveVibesTotal.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                showPositiveVibesTotalButtonActionPerformed(evt);
+
+        findLastUpdatedUserButton.setText("Last Updated User");
+        findLastUpdatedUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findLastUpdatedUserButtonActionPerformed(evt);
             }
         });
 
+        verifyIDsButton.setText("Verify IDs");
+        verifyIDsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verifyIDsButtonActionPerformed(evt);
+            }
+        });
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -124,12 +134,18 @@ public class AdminControlPanel extends JPanel {
                                         .addComponent(openUserViewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(findLastUpdatedUserButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(showMessageTotalsButton, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                                                         .addComponent(showUserTotalButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(15, 15, 15)
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(showGroupTotalButton, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                                        .addComponent(showPositiveVibesTotal, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(15, 15, 15)
+                                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(showGroupTotalButton, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                                                        .addComponent(showPositiveVibesTotal, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(verifyIDsButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -144,7 +160,11 @@ public class AdminControlPanel extends JPanel {
                                         .addComponent(addGroupButton))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(openUserViewButton)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(findLastUpdatedUserButton)
+                                        .addComponent(verifyIDsButton))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                         .addComponent(showUserTotalButton)
                                         .addComponent(showGroupTotalButton))
@@ -154,7 +174,7 @@ public class AdminControlPanel extends JPanel {
                                         .addComponent(showPositiveVibesTotal))
                                 .addGap(11, 11, 11))
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                                 .addContainerGap())
         );
     }
@@ -285,11 +305,50 @@ public class AdminControlPanel extends JPanel {
 
     }
 
+    private void findLastUpdatedUserButtonActionPerformed(ActionEvent evt) {
+        UserComponent currentlySelected = userTree.getCurrentlySelected();
+        Visitor visitor = new LastUpdatedUserVisitor();
+        User user;
+        UserGroup selectedUserGroup;
+        if(currentlySelected instanceof User){
+            User selectedUser = (User)currentlySelected;
+            selectedUserGroup = selectedUser.getParent();
+        }else{
+            selectedUserGroup = (UserGroup)currentlySelected;
+        }
+        selectedUserGroup.accept(visitor);
+        user = visitor.getUser();
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current most currently updated user in " + selectedUserGroup + " is: " + user,
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void verifyIDsButtonActionPerformed(ActionEvent evt) {
+        UserComponent currentlySelected = userTree.getCurrentlySelected();
+        Visitor verifiedIdsTotal = new CheckValidIDVisitor();
+        int count;
+        UserGroup selectedUserGroup;
+        if(currentlySelected instanceof User){
+            User selectedUser = (User)currentlySelected;
+            selectedUserGroup = selectedUser.getParent();
+        }else{
+            selectedUserGroup = (UserGroup)currentlySelected;
+        }
+        selectedUserGroup.accept(verifiedIdsTotal);
+        count = verifiedIdsTotal.getCount();
+        JOptionPane.showMessageDialog(currentFrame,
+                "The current number of invalid IDs in the directory " + selectedUserGroup + " is: " + count,
+                "Metrics",
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
 
     // GUI Variables declaration
     private JButton addGroupButton;
     private JButton addUserButton;
     private JTextField groupTextField;
+    private JButton findLastUpdatedUserButton;
     private JButton openUserViewButton;
     private JScrollPane scrollPane;
     private JButton showGroupTotalButton;
@@ -298,4 +357,5 @@ public class AdminControlPanel extends JPanel {
     private JButton showUserTotalButton;
     private JTextField userTextField;
     private TreeView userTree;
+    private JButton verifyIDsButton;
 }
